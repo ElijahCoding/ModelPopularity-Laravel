@@ -8,4 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 class Visit extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'data',
+    ];
+
+    protected $casts = [
+        'data' => 'json',
+    ];
+
+    public function visitable()
+    {
+        return $this->morphTo();
+    }
 }
