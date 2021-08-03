@@ -10,13 +10,10 @@ class PendingVisit
 
     public function __construct(protected Model $model) {}
 
-    public function withIp()
-    {
-        $this->attributes['ip'] = 'test';
-    }
-
     public function __destruct()
     {
-        dd('abc');
+        $this->model->visits()->create([
+            'data' => $this->attributes,
+        ]);
     }
 }
