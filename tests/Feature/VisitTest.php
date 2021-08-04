@@ -12,3 +12,23 @@ it('it creates a visit', function () {
 
     expect($series->visits->count())->toBe(1);
 });
+
+it('it creates a visit with the default ip address', function () {
+    $series = Series::factory()->create();
+
+    $series->visit()->withIp();
+
+    expect($series->visits->first()->data)->toMatchArray([
+        'ip' => request()->ip(),
+    ]);
+});
+
+it('it creates a visit with the given ip address', function () {
+    $series = Series::factory()->create();
+
+    $series->visit()->withIp('localhost');
+
+    expect($series->visits->first()->data)->toMatchArray([
+        'ip' => 'localhost',
+    ]);
+});
