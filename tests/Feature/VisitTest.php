@@ -1,11 +1,14 @@
 <?php
 
-namespace Tests\Feature;
-
+use App\Models\Series;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 
-class VisitTest extends TestCase
-{
-    
-}
+uses(RefreshDatabase::class);
+
+it('it creates a visit', function () {
+    $series = Series::factory()->create();
+
+    $series->visit();
+
+    expect($series->visits->count())->toBe(1);
+});
