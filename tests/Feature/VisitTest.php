@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use App\Models\Series;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -32,3 +33,40 @@ it('it creates a visit with the given ip address', function () {
         'ip' => 'localhost',
     ]);
 });
+
+it('it creates a visit with custom data', function () {
+    $series = Series::factory()->create();
+
+    $series->visit()->withData([
+        'cats' => true
+    ]);
+
+    expect($series->visits->first()->data)->toMatchArray([
+        'cats' => true,
+    ]);
+});
+
+it('it creates a visit with the default user', function () {
+    $this->actingAs($user = User::factory()->create());
+
+    $series = Series::factory()->create();
+
+    $series->visit()->withUser();
+
+    expect($series->visits->first()->data)->toMatchArray([
+        'user_id' => $user->id,
+    ]);
+});
+
+it('it creates a visit with the given user', function () {
+    $user = User::factory()->create();
+
+    $series = Series::factory()->create();
+
+    $series->visit()->withUser($user);
+
+    expect($series->visits->first()->data)->toMatchArray([
+        'user_id' => $user->id,
+    ]);
+});
+
