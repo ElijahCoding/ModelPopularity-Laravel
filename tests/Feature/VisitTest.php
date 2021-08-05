@@ -70,3 +70,16 @@ it('it creates a visit with the given user', function () {
     ]);
 });
 
+it('it does not create duplicate visits with the same data', function () {
+    $series = Series::factory()->create();
+
+    $series->visit()->withData([
+        'cats' => true
+    ]);
+
+    $series->visit()->withData([
+        'cats' => true
+    ]);
+
+    expect($series->visits->count())->toBe(1);
+});
