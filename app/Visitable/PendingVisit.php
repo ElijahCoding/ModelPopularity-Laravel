@@ -9,7 +9,9 @@ class PendingVisit
 {
     protected $attributes = [];
 
-    public function __construct(protected Model $model) {}
+    public function __construct(protected Model $model)
+    {
+    }
 
     public function withIp($ip = null)
     {
@@ -32,10 +34,18 @@ class PendingVisit
         return $this;
     }
 
+    protected function buildJsonColumns()
+    {
+        
+    }
+
     public function __destruct()
     {
-        $this->model->visits()->create([
+        $this->model->visits()->firstOrCreate([
             'data' => $this->attributes,
-        ]);
+        ],
+            [
+                'data' => $this->attributes,
+            ]);
     }
 }
