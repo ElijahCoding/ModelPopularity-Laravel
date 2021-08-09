@@ -3,6 +3,7 @@
 use App\Models\User;
 use App\Models\Series;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Carbon\Carbon;
 
 uses(RefreshDatabase::class);
 
@@ -88,7 +89,7 @@ it('it creates visits after a daily timeframe', function () {
     $series = Series::factory()->create();
 
     $series->visit()->withIp();
-    \Carbon\Carbon::setTestNow(now()->addDay()->addHour());
+    Carbon::setTestNow(now()->addDay()->addHour());
     $series->visit()->withIp();
 
     expect($series->visits->count())->toBe(2);
