@@ -83,3 +83,13 @@ it('it does not create duplicate visits with the same data', function () {
 
     expect($series->visits->count())->toBe(1);
 });
+
+it('it creates visits after a daily timeframe', function () {
+    $series = Series::factory()->create();
+
+    $series->visit()->withIp();
+    \Carbon\Carbon::setTestNow(now()->addDay()->addHour());
+    $series->visit()->withIp();
+
+    expect($series->visits->count())->toBe(2);
+});

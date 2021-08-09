@@ -9,8 +9,11 @@ class PendingVisit
 {
     protected $attributes = [];
 
+    protected $interval;
+
     public function __construct(protected Model $model)
     {
+
     }
 
     public function withIp($ip = null)
@@ -41,6 +44,11 @@ class PendingVisit
                 return ['data->' . $index => $value];
             })
             ->toArray();
+    }
+
+    protected function shouldBeLoggedAgain()
+    {
+        return false;
     }
 
     public function __destruct()
