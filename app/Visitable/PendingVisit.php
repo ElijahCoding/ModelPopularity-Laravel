@@ -54,7 +54,7 @@ class PendingVisit
 
     public function __destruct()
     {
-        $visit = $this->model->visits()->firstOrCreate($this->buildJsonColumns(), [
+        $visit = $this->model->visits()->latest()->firstOrCreate($this->buildJsonColumns(), [
             'data' => $this->attributes,
         ]);
 

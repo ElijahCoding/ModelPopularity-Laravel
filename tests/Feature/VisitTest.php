@@ -85,6 +85,19 @@ it('it does not create duplicate visits with the same data', function () {
     expect($series->visits->count())->toBe(1);
 });
 
+it('it does not create visits within the timeframe', function () {
+    $series = Series::factory()->create();
+
+    Carbon::setTestNow(now()->subDays(2));
+    $series->visit();
+
+    Carbon::setTestNow();
+    $series->visit();
+    $series->visit();
+
+    expect($series->visits->count())->toBe(2);
+});
+
 it('it creates visits after a daily timeframe', function () {
     $series = Series::factory()->create();
 
