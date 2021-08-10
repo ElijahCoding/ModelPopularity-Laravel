@@ -5,12 +5,17 @@ namespace App\Visitable;
 use App\Models\User;
 use App\Models\Visit;
 use Illuminate\Database\Eloquent\Model;
+use App\Visitable\Concerns\SetsPendingInterval;
+use Illuminate\Support\Carbon;
+
 
 class PendingVisit
 {
+    use SetsPendingInterval;
+
     protected $attributes = [];
 
-    protected $interval;
+    protected Carbon $interval;
 
     public function __construct(protected Model $model)
     {

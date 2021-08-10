@@ -107,3 +107,23 @@ it('it creates visits after a daily timeframe', function () {
 
     expect($series->visits->count())->toBe(2);
 });
+
+it('it creates visits after a hourly timeframe', function () {
+    $series = Series::factory()->create();
+
+    $series->visit()->hourlyIntervals()->withIp();
+    Carbon::setTestNow(now()->addHour()->addMinute());
+    $series->visit()->hourlyIntervals()->withIp();
+
+    expect($series->visits->count())->toBe(2);
+});
+
+it('it creates visits after a default daily timeframe', function () {
+    $series = Series::factory()->create();
+
+    $series->visit()->dailyIntervals()->withIp();
+    Carbon::setTestNow(now()->addDay()->addMinute());
+    $series->visit()->dailyIntervals()->withIp();
+
+    expect($series->visits->count())->toBe(2);
+});
