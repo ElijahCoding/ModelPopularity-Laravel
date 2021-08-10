@@ -19,7 +19,7 @@ class PendingVisit
 
     public function __construct(protected Model $model)
     {
-        $this->interval = now()->subDay();
+        $this->dailyInterval();
     }
 
     public function withIp($ip = null)

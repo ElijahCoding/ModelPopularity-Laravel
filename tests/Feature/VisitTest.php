@@ -111,9 +111,9 @@ it('it creates visits after a daily timeframe', function () {
 it('it creates visits after a hourly timeframe', function () {
     $series = Series::factory()->create();
 
-    $series->visit()->hourlyIntervals()->withIp();
+    $series->visit()->hourlyInterval()->withIp();
     Carbon::setTestNow(now()->addHour()->addMinute());
-    $series->visit()->hourlyIntervals()->withIp();
+    $series->visit()->hourlyInterval()->withIp();
 
     expect($series->visits->count())->toBe(2);
 });
@@ -121,9 +121,39 @@ it('it creates visits after a hourly timeframe', function () {
 it('it creates visits after a default daily timeframe', function () {
     $series = Series::factory()->create();
 
-    $series->visit()->dailyIntervals()->withIp();
+    $series->visit()->dailyInterval()->withIp();
     Carbon::setTestNow(now()->addDay()->addMinute());
-    $series->visit()->dailyIntervals()->withIp();
+    $series->visit()->dailyInterval()->withIp();
+
+    expect($series->visits->count())->toBe(2);
+});
+
+it('it creates visits after a default weekly timeframe', function () {
+    $series = Series::factory()->create();
+
+    $series->visit()->weeklyInterval()->withIp();
+    Carbon::setTestNow(now()->addWeek()->addMinute());
+    $series->visit()->weeklyInterval()->withIp();
+
+    expect($series->visits->count())->toBe(2);
+});
+
+it('it creates visits after a default monthly timeframe', function () {
+    $series = Series::factory()->create();
+
+    $series->visit()->monthlyInterval()->withIp();
+    Carbon::setTestNow(now()->addMonth()->addMinute());
+    $series->visit()->monthlyInterval()->withIp();
+
+    expect($series->visits->count())->toBe(2);
+});
+
+it('it creates visits after a custom timeframe', function () {
+    $series = Series::factory()->create();
+
+    $series->visit()->customInterval(now()->subYear())->withIp();
+    Carbon::setTestNow(now()->addYear()->addMinute());
+    $series->visit()->customInterval(now()->subYear())->withIp();
 
     expect($series->visits->count())->toBe(2);
 });
