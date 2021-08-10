@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Series;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
@@ -17,9 +18,16 @@ it('it gets the total visit count', function () {
 
 it('it gets records by all time popularity', function () {
     Series::factory()->times(2)->create()->each->visit();
+    $popularSeries = Series::factory()->create();
 
-    $series = Series::popularAllTime()->get();
+    Carbon::setTestNow(now()->subDays(2));
+    $popularSeries->visit();
+    Carbon::setTestNow();
+    $popularSeries->visit();
 
-    expect($series->count())->toBe(2);
-    expect($series->first()->visit_count_total)->toBe(1);
+    $series = Series::query()->latest()->popularAllTime()->get();
+
+    expect($series->count())->toBe(3);
+    expect($series->first()->visit_count_total)->toEqual(2);
 });
+

@@ -3,10 +3,13 @@
 namespace App\Visitable;
 
 use App\Models\Visit;
+use App\Visitable\Concerns\FiltersByPopularityTimeframe;
 use Illuminate\Database\Eloquent\Builder;
 
 trait Visitable
 {
+    use FiltersByPopularityTimeframe;
+
     public function visit()
     {
         return new PendingVisit($this);

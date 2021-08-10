@@ -10,6 +10,8 @@ trait FiltersByPopularityTimeframe
 {
     public function scopePopularAllTime(Builder $query)
     {
-        
+        $query->withTotalVisitCount()->orderBy('visit_count_total', 'desc');
     }
+
+
 }
