@@ -1,7 +1,7 @@
 <?php
 
 use App\Models\Series;
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
@@ -33,6 +33,16 @@ it('it gets records by all time popularity', function () {
 
 it('it gets popular records between two dates', function () {
     $series = Series::factory()->times(2)->create();
-    
-    Carbon::setTestNow(Carbon::createFromDate(2021, 8, 1));
+
+    Carbon::setTestNow(Carbon::createFromDate(1990, 8, 2));
+    $series[0]->visit();
+
+    Carbon::setTestNow();
+    $series[0]->visit();
+    $series[1]->visit();
+
+    $series = Series::popularBetween(Carbon::createFromDate(1990, 8, 1), Carbon::createFromDate(1990, 8, 30))->get();
+
+    expect($series->count())->toBe(1);
+    expect($series[0]->visit_count)->toEqual(1);
 });
