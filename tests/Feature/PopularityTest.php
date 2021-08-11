@@ -31,3 +31,8 @@ it('it gets records by all time popularity', function () {
     expect($series->first()->visit_count_total)->toEqual(2);
 });
 
+it('it gets popular records between two dates', function () {
+    $series = Series::factory()->times(2)->create();
+    
+    Carbon::setTestNow(Carbon::createFromDate(2021, 8, 1));
+});
