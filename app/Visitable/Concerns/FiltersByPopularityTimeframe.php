@@ -14,8 +14,6 @@ trait FiltersByPopularityTimeframe
         $query->withTotalVisitCount()->orderBy('visit_count_total', 'desc');
     }
 
-
-
     public function scopePopularBetween(Builder $query, Carbon $from, Carbon $to)
     {
         $query->whereHas('visits', $this->betweenScope($from, $to))
@@ -28,6 +26,22 @@ trait FiltersByPopularityTimeframe
     public function scopePopularLastDays(Builder $query, $days)
     {
         $query->popularBetween(now()->subDays($days), now());
+    }
+
+    public function scopePopularLastWeek(Builder $query)
+    {
+        $query->popularBetween(
+            $startOfLastWeek = now()->subDays(7)->startOfWeek(),
+            $startOfLastWeek->copy()->endOfWeek()
+        );
+    }
+
+    public function scopePopularThisWeek(Builder $query)
+    {
+        $query->popularBetween(
+            now()->startOfWeek(),
+            now()->endOfWeek()
+        );
     }
 
     protected function betweenScope(Carbon $from, Carbon $to)
