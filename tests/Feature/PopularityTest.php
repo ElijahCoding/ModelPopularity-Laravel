@@ -78,13 +78,41 @@ it('it gets popular records by the last week', function () {
 it('it gets popular records by this week', function () {
     $series = Series::factory()->times(2)->create();
 
-    Carbon::setTestNow(now()->subWeek(7)->subDay());
+    Carbon::setTestNow(now()->subWeek()->subDay());
     $series[0]->visit();
 
     Carbon::setTestNow();
     $series[1]->visit();
 
     $series = Series::popularThisWeek()->get();
+
+    expect($series->count())->toBe(1);
+});
+
+it('it gets popular records by this month', function () {
+    $series = Series::factory()->times(2)->create();
+
+    Carbon::setTestNow(now()->subMonth()->subDay());
+    $series[0]->visit();
+
+    Carbon::setTestNow();
+    $series[1]->visit();
+
+    $series = Series::popularThisMonth()->get();
+
+    expect($series->count())->toBe(1);
+});
+
+it('it gets popular records by last month', function () {
+    $series = Series::factory()->times(2)->create();
+
+    Carbon::setTestNow(now()->subMonth()->startOfMonth());
+    $series[0]->visit();
+
+    Carbon::setTestNow();
+    $series[1]->visit();
+
+    $series = Series::popularLastMonth()->get();
 
     expect($series->count())->toBe(1);
 });

@@ -44,6 +44,22 @@ trait FiltersByPopularityTimeframe
         );
     }
 
+    public function scopePopularThisMonth(Builder $query)
+    {
+        $query->popularBetween(
+            now()->startOfMonth(),
+            now()->endOfMonth()
+        );
+    }
+
+    public function scopePopularLastMonth(Builder $query)
+    {
+        $query->popularBetween(
+            now()->startOfMonth()->subMonthWithoutOverflow(),
+            now()->subMonthWithoutOverflow()->endOfMonth(),
+        );
+    }
+
     protected function betweenScope(Carbon $from, Carbon $to)
     {
         return function ($query) use ($from, $to) {
